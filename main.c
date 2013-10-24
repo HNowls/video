@@ -75,10 +75,10 @@ int main(int argc, char * argv[])
 		exit(1);
 	}
 
-	if (av_find_stream_info(ptr_format_ctx) < 0)
+	if (avformat_find_stream_info(ptr_format_ctx, NULL) < 0)
 		return -1;
 
-	av_dump_format(ptr_format_ctx, NULL, argv[1], NULL);
+	av_dump_format(ptr_format_ctx, 0, argv[1], 0);
 
 
 	audio_stream = -1;
@@ -158,7 +158,7 @@ int main(int argc, char * argv[])
 	bmp = SDL_CreateYUVOverlay(video_codec_ctx->width, video_codec_ctx->height, SDL_YV12_OVERLAY, screen);
 
 	got_frame = 0;
-	while (av_read_frame(ptr_format_ctx, &packet))
+	while (av_read_frame(ptr_format_ctx, &packet) >= 0)
 	{
 		if (packet.stream_index == video_stream)
 		{
@@ -213,14 +213,14 @@ int main(int argc, char * argv[])
 		}
 	}
 
-	avcodec_free_frame(frame);
+	avcodec_free_frame(&frame);
 
 	// Close the codec
 	avcodec_close(audio_codec_ctx);
 	avcodec_close(video_codec_ctx);
 
 	// Close the video file
-	avformat_close_input(ptr_format_ctx);
+	avformat_close_input(&ptr_format_ctx);
 
 
 
