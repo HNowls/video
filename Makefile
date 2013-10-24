@@ -1,5 +1,5 @@
 SRC := main.c audio_thread.c packet_queue.c	
-TARGET := audio
+TARGET := video
 CC	:= gcc
 CFLAGS := -g
 LFLAGS := -lavutil -lavformat -lavcodec -lswscale -lz -lm -lSDL
